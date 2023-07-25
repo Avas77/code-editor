@@ -1,8 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
+import * as esbuild from "esbuild-wasm";
+
+const startService = async () => {
+  const service = await esbuild.startService({
+    worker: true,
+    wasmURL: "/esbuild.wasm",
+  });
+  console.log({ service });
+};
 
 function App() {
   const [code, setCode] = React.useState("");
   const [convertedCode, setConvertedCode] = React.useState("");
+
+  useEffect(() => {
+    startService();
+  }, []);
 
   const onCodeChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCode(event.target.value);
