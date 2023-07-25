@@ -1,17 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import * as esbuild from "esbuild-wasm";
 
-const startService = async () => {
-  const service = await esbuild.startService({
-    worker: true,
-    wasmURL: "/esbuild.wasm",
-  });
-  console.log({ service });
-};
-
 function App() {
+  const ref = useRef<esbuild.Service>();
   const [code, setCode] = React.useState("");
   const [convertedCode, setConvertedCode] = React.useState("");
+
+  const startService = async () => {
+    ref.current = await esbuild.startService({
+      worker: true,
+      wasmURL: "/esbuild.wasm",
+    });
+  };
 
   useEffect(() => {
     startService();
@@ -22,7 +22,10 @@ function App() {
   };
 
   const onSubmitCode = () => {
-    console.log({ code });
+    if(!ref.current){
+      return;
+    }
+    console.log(ref.current);
   };
 
   return (
