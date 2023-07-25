@@ -21,11 +21,15 @@ function App() {
     setCode(event.target.value);
   };
 
-  const onSubmitCode = () => {
-    if(!ref.current){
+  const onSubmitCode = async () => {
+    if (!ref.current) {
       return;
     }
-    console.log(ref.current);
+    const result = await ref.current.transform(code, {
+      loader: "jsx",
+      target: "es2015",
+    });
+    setConvertedCode(result.code);
   };
 
   return (
@@ -34,7 +38,7 @@ function App() {
       <div>
         <button onClick={onSubmitCode}>Submit</button>
       </div>
-      <pre></pre>
+      <pre>{convertedCode}</pre>
     </div>
   );
 }
