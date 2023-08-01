@@ -27,7 +27,7 @@ export const unpkgPathPlugin = () => {
           return {
             loader: 'jsx',
             contents: `
-              const tiny = require("nested-test-pkg");
+              const tiny = require("react");
               console.log(message);
             `,
           };
