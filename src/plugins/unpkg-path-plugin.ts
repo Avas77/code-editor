@@ -11,7 +11,7 @@ export const unpkgPathPlugin = () => {
           return { path: args.path, namespace: 'a' };
         }
         if(args.path.includes("./") || args.path.includes("../")){
-          const formattedURL = new URL(args.path, args.importer + "/");
+          const formattedURL = new URL(args.path, "https://unpkg.com" + args.resolveDir + "/");
           return {
             namespace: "a",
             path: formattedURL.href
@@ -27,15 +27,16 @@ export const unpkgPathPlugin = () => {
           return {
             loader: 'jsx',
             contents: `
-              const tiny = require("medium-test-pkg");
+              const tiny = require("react");
               console.log(message);
             `,
           };
         }
-        const {data} = await axios.get(args.path);
+        const {data, request} = await axios.get(args.path);
         return {
           loader: "jsx",
-          contents: data
+          contents: data,
+          resolveDir: new URL("./", request.responseURL).pathname
         }
       });
     },
