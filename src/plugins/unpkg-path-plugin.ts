@@ -37,12 +37,12 @@ export const unpkgPathPlugin = () => {
             `,
           };
         }
-        const cachedResult = await localforage.getItem(args.path);
+        const cachedResult = await localforage.getItem<esbuild.OnLoadResult>(args.path);
         if(cachedResult){
           return cachedResult
         }
         const {data, request} = await axios.get(args.path);
-        const result = {
+        const result: esbuild.OnLoadResult = {
           loader: "jsx",
           contents: data,
           resolveDir: new URL("./", request.responseURL).pathname
