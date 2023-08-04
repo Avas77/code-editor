@@ -30,7 +30,7 @@ function App() {
       entryPoints: ["index.js"],
       bundle: true,
       write: false,
-      plugins: [unpkgPathPlugin()],
+      plugins: [unpkgPathPlugin(code)],
       define: {
         "process.env.NODE_ENV": '"production"',
         global: "window",
@@ -39,7 +39,7 @@ function App() {
     console.log({ result });
     setConvertedCode(result.outputFiles[0].text);
   };
-
+  console.log({ code });
   return (
     <div>
       <textarea value={code} onChange={onCodeChange} />
