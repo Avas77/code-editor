@@ -5,8 +5,23 @@ import { fetchPlugin } from "./plugins/fetch-plugin";
 
 function App() {
   const ref = useRef<esbuild.Service>();
+  const iframe = useRef<any>();
   const [code, setCode] = React.useState("");
   const [convertedCode, setConvertedCode] = React.useState("");
+
+  const html = `
+    <html>
+      <head></head>
+      <body>
+        <div id="root"></div>
+        <script>
+          window.addEventListener("message", (event) => {
+            eval(event.data)
+          }, false)
+        </script>
+      </body>
+    </html>
+  `;
 
   const startService = async () => {
     ref.current = await esbuild.startService({
@@ -37,10 +52,9 @@ function App() {
         global: "window",
       },
     });
-    console.log({ result });
-    setConvertedCode(result.outputFiles[0].text);
+    iframe.current.contentWindow.postMessage(result.outputFiles[0].text, "*");
   };
-  console.log({ code });
+
   return (
     <div>
       <textarea value={code} onChange={onCodeChange} />
@@ -48,6 +62,12 @@ function App() {
         <button onClick={onSubmitCode}>Submit</button>
       </div>
       <pre>{convertedCode}</pre>
+      <iframe
+        sandbox="allow-scripts"
+        srcDoc={html}
+        title="output"
+        ref={iframe}
+      />
     </div>
   );
 }
