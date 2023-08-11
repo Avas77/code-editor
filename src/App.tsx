@@ -16,7 +16,13 @@ function App() {
         <div id="root"></div>
         <script>
           window.addEventListener("message", (event) => {
-            eval(event.data)
+            try {
+              eval(event.data)
+            } catch (err){
+              const root = document.getElementById('root');
+              root.innerHTML = '<div style="color: red;">' + err + '</div>';
+              throw err;
+            }
           }, false)
         </script>
       </body>
