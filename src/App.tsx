@@ -7,7 +7,6 @@ function App() {
   const ref = useRef<esbuild.Service>();
   const iframe = useRef<any>();
   const [code, setCode] = React.useState("");
-  const [convertedCode, setConvertedCode] = React.useState("");
 
   const html = `
     <html>
@@ -67,7 +66,6 @@ function App() {
       <div>
         <button onClick={onSubmitCode}>Submit</button>
       </div>
-      <pre>{convertedCode}</pre>
       <iframe
         sandbox="allow-scripts"
         srcDoc={html}
