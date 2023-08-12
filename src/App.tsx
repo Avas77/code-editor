@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import * as esbuild from "esbuild-wasm";
 import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin";
 import { fetchPlugin } from "./plugins/fetch-plugin";
+import CodeEditor from "./components/Editor";
 
 function App() {
   const ref = useRef<esbuild.Service>();
@@ -62,6 +63,7 @@ function App() {
 
   return (
     <div>
+      <CodeEditor />
       <textarea value={code} onChange={onCodeChange} />
       <div>
         <button onClick={onSubmitCode}>Submit</button>
