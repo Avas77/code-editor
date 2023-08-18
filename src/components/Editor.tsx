@@ -1,7 +1,8 @@
 import { Editor } from "@monaco-editor/react";
-import React, { Fragment, useRef } from "react";
+import { useRef } from "react";
 import prettier from "prettier";
 import parser from "prettier/parser-babel";
+import "./Editor.css";
 
 interface EditorProps {
   initialValue: string;
@@ -16,10 +17,7 @@ const CodeEditor = ({ initialValue, handleChange }: EditorProps) => {
 
   const onFormatClick = () => {
     if (editorRef.current) {
-      // get current value from editor
       const unformatted = editorRef.current.getModel().getValue();
-
-      // format that value
       const formatted = prettier.format(unformatted, {
         parser: "babel",
         plugins: [parser],
@@ -27,15 +25,18 @@ const CodeEditor = ({ initialValue, handleChange }: EditorProps) => {
         semi: true,
         singleQuote: true,
       });
-
-      // set the formatted value back in the editor
       editorRef.current.setValue(formatted);
     }
   };
 
   return (
-    <Fragment>
-      <button onClick={onFormatClick}>Format</button>
+    <div className="editor-wrapper">
+      <button
+        onClick={onFormatClick}
+        className="button button-format is-primary is-small"
+      >
+        Format
+      </button>
       <Editor
         onMount={onEditorMountChange}
         onChange={(value) => handleChange(value)}
@@ -55,7 +56,7 @@ const CodeEditor = ({ initialValue, handleChange }: EditorProps) => {
           automaticLayout: true,
         }}
       />
-    </Fragment>
+    </div>
   );
 };
 
