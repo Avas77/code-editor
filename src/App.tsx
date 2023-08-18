@@ -40,8 +40,12 @@ function App() {
     startService();
   }, []);
 
-  const onCodeChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setCode(event.target.value);
+  const onCodeChange = (value?: string) => {
+    if (value) {
+      setCode(value);
+    } else {
+      setCode("");
+    }
   };
 
   const onSubmitCode = async () => {
@@ -63,8 +67,7 @@ function App() {
 
   return (
     <div>
-      <CodeEditor initialValue={code} />
-      <textarea value={code} onChange={onCodeChange} />
+      <CodeEditor initialValue={code} handleChange={onCodeChange} />
       <div>
         <button onClick={onSubmitCode}>Submit</button>
       </div>
