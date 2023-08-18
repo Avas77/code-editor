@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import * as esbuild from "esbuild-wasm";
 import { unpkgPathPlugin } from "./plugins/unpkg-path-plugin";
 import { fetchPlugin } from "./plugins/fetch-plugin";
+import CodeEditor from "./components/Editor";
 
 function App() {
   const ref = useRef<esbuild.Service>();
@@ -39,14 +40,19 @@ function App() {
     startService();
   }, []);
 
-  const onCodeChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setCode(event.target.value);
+  const onCodeChange = (value?: string) => {
+    if (value) {
+      setCode(value);
+    } else {
+      setCode("");
+    }
   };
 
   const onSubmitCode = async () => {
     if (!ref.current) {
       return;
     }
+    iframe.current.srcdoc = html;
     const result = await ref.current.build({
       entryPoints: ["index.js"],
       bundle: true,
@@ -62,7 +68,7 @@ function App() {
 
   return (
     <div>
-      <textarea value={code} onChange={onCodeChange} />
+      <CodeEditor initialValue={code} handleChange={onCodeChange} />
       <div>
         <button onClick={onSubmitCode}>Submit</button>
       </div>
