@@ -3,6 +3,7 @@ import "bulmaswatch/superhero/bulmaswatch.min.css";
 import CodeEditor from "../Editor/Editor";
 import Preview from "../Preview";
 import bundler from "../../bundler";
+import Resizable from "../Resizable";
 
 function CodeCell() {
   const iframe = useRef<any>();
@@ -43,13 +44,17 @@ function CodeCell() {
   };
 
   return (
-    <div>
-      <CodeEditor initialValue={code} handleChange={onCodeChange} />
-      <div>
-        <button onClick={onSubmitCode}>Submit</button>
+    <Resizable direction="vertical">
+      <div
+        style={{
+          height: "100%",
+          display: "flex",
+        }}
+      >
+        <CodeEditor initialValue={code} handleChange={onCodeChange} />
+        <Preview html={html} iframe={iframe} />
       </div>
-      <Preview html={html} iframe={iframe} />
-    </div>
+    </Resizable>
   );
 }
 

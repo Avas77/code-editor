@@ -41,7 +41,7 @@ const CodeEditor = ({ initialValue, handleChange }: EditorProps) => {
         onMount={onEditorMountChange}
         onChange={(value) => handleChange(value)}
         value={initialValue}
-        height="500px"
+        height="100%"
         language="javascript"
         theme="vs-dark"
         options={{

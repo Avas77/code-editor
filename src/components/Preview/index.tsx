@@ -7,7 +7,13 @@ interface IProps {
 
 const Preview = ({ html, iframe }: IProps) => {
   return (
-    <iframe sandbox="allow-scripts" srcDoc={html} title="output" ref={iframe} />
+    <iframe
+      sandbox="allow-scripts"
+      srcDoc={html}
+      title="output"
+      ref={iframe}
+      style={{ backgroundColor: "#fff" }}
+    />
   );
 };
 
