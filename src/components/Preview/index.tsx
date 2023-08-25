@@ -1,4 +1,5 @@
 import React from "react";
+import "./styles.css";
 
 interface IProps {
   html: string;
@@ -7,13 +8,15 @@ interface IProps {
 
 const Preview = ({ html, iframe }: IProps) => {
   return (
-    <iframe
-      sandbox="allow-scripts"
-      srcDoc={html}
-      title="output"
-      ref={iframe}
-      style={{ backgroundColor: "#fff" }}
-    />
+    <div className="preview-wrapper">
+      <iframe
+        sandbox="allow-scripts"
+        srcDoc={html}
+        title="output"
+        ref={iframe}
+        style={{ backgroundColor: "#fff" }}
+      />
+    </div>
   );
 };
 

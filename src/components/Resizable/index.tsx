@@ -9,7 +9,13 @@ interface IProps {
 
 const Resizable = ({ children, direction }: IProps) => {
   return (
-    <ResizableBox width={Infinity} height={1000} resizeHandles={["s"]}>
+    <ResizableBox
+      width={Infinity}
+      height={1000}
+      resizeHandles={["s"]}
+      maxConstraints={[Infinity, window.innerHeight * 0.9]}
+      minConstraints={[Infinity, 24]}
+    >
       {children}
     </ResizableBox>
   );
