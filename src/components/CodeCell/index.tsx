@@ -1,8 +1,9 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import "bulmaswatch/superhero/bulmaswatch.min.css";
 import CodeEditor from "../Editor/Editor";
 import Preview from "../Preview";
 import bundler from "../../bundler";
+import Resizable from "../Resizable";
 
 function CodeCell() {
   const iframe = useRef<any>();
@@ -10,7 +11,13 @@ function CodeCell() {
 
   const html = `
     <html>
-      <head></head>
+      <head>
+        <style>
+          html {
+            background-color: white;
+          }
+        </style>
+      </head>
       <body>
         <div id="root"></div>
         <script>
@@ -36,20 +43,33 @@ function CodeCell() {
     }
   };
 
-  const onSubmitCode = async () => {
-    const output = await bundler(code);
-    iframe.current.srcdoc = html;
-    iframe.current.contentWindow.postMessage(output, "*");
-  };
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      const output = await bundler(code);
+      iframe.current.srcdoc = html;
+      setTimeout(() => {
+        iframe.current.contentWindow.postMessage(output, "*");
+      }, 50);
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [code, html]);
 
   return (
-    <div>
-      <CodeEditor initialValue={code} handleChange={onCodeChange} />
-      <div>
-        <button onClick={onSubmitCode}>Submit</button>
+    <Resizable direction="vertical">
+      <div
+        style={{
+          height: "100%",
+          display: "flex",
+        }}
+      >
+        <Resizable direction="horizontal">
+          <CodeEditor initialValue={code} handleChange={onCodeChange} />
+        </Resizable>
+        <Preview html={html} iframe={iframe} />
       </div>
-      <Preview html={html} iframe={iframe} />
-    </div>
+    </Resizable>
   );
 }
 
