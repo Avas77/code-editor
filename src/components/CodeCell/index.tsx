@@ -11,7 +11,13 @@ function CodeCell() {
 
   const html = `
     <html>
-      <head></head>
+      <head>
+        <style>
+          html {
+            background-color: white;
+          }
+        </style>
+      </head>
       <body>
         <div id="root"></div>
         <script>
@@ -51,7 +57,9 @@ function CodeCell() {
           display: "flex",
         }}
       >
-        <CodeEditor initialValue={code} handleChange={onCodeChange} />
+        <Resizable direction="horizontal">
+          <CodeEditor initialValue={code} handleChange={onCodeChange} />
+        </Resizable>
         <Preview html={html} iframe={iframe} />
       </div>
     </Resizable>
