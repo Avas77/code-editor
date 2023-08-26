@@ -47,7 +47,9 @@ function CodeCell() {
     const timer = setTimeout(async () => {
       const output = await bundler(code);
       iframe.current.srcdoc = html;
-      iframe.current.contentWindow.postMessage(output, "*");
+      setTimeout(() => {
+        iframe.current.contentWindow.postMessage(output, "*");
+      }, 50);
     }, 1000);
     return () => {
       clearTimeout(timer);
