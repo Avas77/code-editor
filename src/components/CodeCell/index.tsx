@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import "bulmaswatch/superhero/bulmaswatch.min.css";
 import CodeEditor from "../Editor/Editor";
 import Preview from "../Preview";
@@ -43,11 +43,16 @@ function CodeCell() {
     }
   };
 
-  const onSubmitCode = async () => {
-    const output = await bundler(code);
-    iframe.current.srcdoc = html;
-    iframe.current.contentWindow.postMessage(output, "*");
-  };
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+      const output = await bundler(code);
+      iframe.current.srcdoc = html;
+      iframe.current.contentWindow.postMessage(output, "*");
+    }, 1000);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [code, html]);
 
   return (
     <Resizable direction="vertical">
